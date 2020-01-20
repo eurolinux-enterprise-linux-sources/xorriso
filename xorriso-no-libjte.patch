@@ -1,0 +1,54 @@
+diff -up xorriso-1.4.8/Makefile.am.orig xorriso-1.4.8/Makefile.am
+--- xorriso-1.4.8/Makefile.am.orig	2017-09-12 17:39:26.000000000 +0200
++++ xorriso-1.4.8/Makefile.am	2019-03-25 22:39:33.204665214 +0100
+@@ -158,26 +158,6 @@ xorriso_xorriso_SOURCES = \
+ 	libisofs/md5.h \
+ 	libisofs/md5.c \
+ 	\
+-	libjte/libjte.h \
+-	libjte/libjte_private.h \
+-	libjte/libjte.c \
+-	libjte/jte.h \
+-	libjte/jte.c \
+-	libjte/checksum.h \
+-	libjte/checksum.c \
+-	libjte/endian.c \
+-	libjte/endianconv.h \
+-	libjte/md5.h \
+-	libjte/md5.c \
+-	libjte/rsync.h \
+-	libjte/rsync.c \
+-	libjte/sha1.h \
+-	libjte/sha1.c \
+-	libjte/sha256.h \
+-	libjte/sha256.c \
+-	libjte/sha512.h \
+-	libjte/sha512.c \
+-	\
+ 	libburn/async.c \
+ 	libburn/async.h \
+ 	libburn/back_hacks.h \
+diff -up xorriso-1.4.8/configure.ac.orig xorriso-1.4.8/configure.ac
+--- xorriso-1.4.8/configure.ac.orig	2017-09-12 17:39:26.000000000 +0200
++++ xorriso-1.4.8/configure.ac	2019-03-26 12:13:38.852694528 +0100
+@@ -319,7 +319,10 @@ AH_TEMPLATE([Xorriso_with_libjtE],
+             [Define to use Jigdo Template Extraction via libjte])
+ AH_TEMPLATE([Libisofs_with_libjtE],
+             [Define to use Jigdo Template Extraction via libjte])
+-if test x$ZLIB_DEF = xyes
++AC_ARG_ENABLE(libjte,
++[  --enable-libjte         Enable use of libjte by xorriso, default=yes],
++               , enable_libjte=yes)
++if test x$enable_libjte = xyes
+ then
+     AC_DEFINE([Xorriso_with_libjtE], [])
+     AC_DEFINE([Libisofs_with_libjtE], [])
+@@ -327,7 +330,7 @@ then
+     echo "enabled  built-in libjte"
+ else
+     LIBJTE_DEF=
+-    echo "disabled libjte because zlib not enabled or not available"
++    echo "disabled libjte"
+ fi
+ 
+ 
